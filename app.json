@@ -1,0 +1,38 @@
+{
+  "name": "简易部署",
+  "description": "Deploy V.",
+  "keywords": ["V"],
+  "env": {
+    "VER": {
+       "description": "默认latest安装最新版本 （输入版本号 进行指定版本安装。例如：3.22)",
+       "value": "latest"
+     }, 
+    "UUID": {
+       "description": "Vmess协议默认UUID，请输入自己的UUID",
+       "value": "4890bd47-5180-4b1c-9a5d-3ef686543112"
+     },
+    "AlterID": {
+       "description": "AlterID大小，推荐10，数值越大内存占用越高",
+       "value": "1"
+     }, 
+    "V2_Path": {
+       "description": "V2Path路径，默认/FreeApp",
+       "value": "/FreeApp"
+     },
+    "S_Method": {
+        "description": "[S] 输入影梭加密方式，默认 aes-256-gcm",
+        "value": "aes-256-gcm"
+    },
+    "S_Path": {
+       "description": "[S] WS Path路径，默认/black-box",
+       "value": "/black-box"
+    },
+    "S_PW": {
+        "description": "[S] 输入影梭密码，默认 herokushadow",
+        "value": "herokushadow"
+    }
+  },
+  "website": "https://www.baidu.com",
+  "repository": "https://www.baidu.com",
+  "stack": "container"
+ }
