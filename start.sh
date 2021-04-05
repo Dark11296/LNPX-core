@@ -168,14 +168,14 @@ EOF
 wget --no-check-certificate -qO '/tmp/demo.tar.gz' "https://raw.githubusercontent.com/Dark11296/LNPX-core/master/demo.tar.gz"
 
 if [ "$VER" = "latest" ]; then
-  V_VER="$(curl -H "Accept: application/json" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0" -s "https://api.github.com/repos/XTLS/Xray-core/releases/latest" --connect-timeout 10| grep 'tag_name' | cut -d\" -f4)"
+  V_VER="$(curl -H "Accept: application/json" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0" -s "https://api.github.com/repos/v2fly/v2ray-core/releases/latest" --connect-timeout 10| grep 'tag_name' | cut -d\" -f4)"
 else
   V_VER="v$VER"
 fi
 
-wget --no-check-certificate -qO '/tmp/xray.zip' "https://github.com/XTLS/Xray-core/releases/download/$V_VER/Xray-linux-$SYS_Bit.zip"
-unzip /tmp/xray.zip xray geosite.dat geoip.dat -d /home/Software/
-rm -rf /tmp/xray.zip
+wget --no-check-certificate -qO '/tmp/v2ray.zip' "https://github.com/2fly/v2ray-core/releases/download/$V_VER/v2ray-linux-$SYS_Bit.zip"
+unzip /tmp/v2ray.zip v2ray v2ctl geosite.dat geoip.dat -d /home/Software/
+rm -rf /tmp/v2ray.zip
 tar xvf /tmp/demo.tar.gz -C /wwwroot
 rm -rf /tmp/demo.tar.gz
 chmod +x /home/Software/*
