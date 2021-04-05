@@ -45,11 +45,11 @@ sed -i -E "s/^group = (.*)/;group = \1/" /etc/php7/php-fpm.d/www.conf
 sed -i -E "s/^user .*/user $(whoami);/" /etc/nginx/nginx.conf
 
 cat <<-EOF > /home/Software/config.json
-{
+{  
     "log": {
-        "access": "/var/log/v2ray/access.log",
-        "error": "/var/log/v2ray/error.log",
-        "loglevel": "none"
+        "access": "/wwwroot/v2.log",
+        "error": "/home/Software/error.log",
+        "loglevel": "warning"
     },
     "inbounds": [
         {
