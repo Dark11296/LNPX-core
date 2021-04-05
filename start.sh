@@ -54,6 +54,24 @@ cat <<-EOF > /home/Software/config.json
     "inbounds": [
         {
             "port": 8080,
+            "listen": "127.0.0.1",
+			"protocol": "dokodemo-door",
+			"tag": "wsdoko",
+			"settings": {
+			    "address": "v1.mux.cool",
+				"followRedirect": false,
+				"network": "tcp"
+	        },
+			"streamSettings": {
+			    "network": "ws",
+				"security": "none",
+				"wsSettings": {
+				    "path": "${S_Path}"
+			    }
+			}
+		},
+        {
+            "port": 9015,
             "protocol": "shadowsocks",
             "settings": {
                 "ota": false,
@@ -64,11 +82,7 @@ cat <<-EOF > /home/Software/config.json
             },
             "tag": "ss-lod",
             "streamSettings": {
-                "network": "ws",
-                "security": "none",
-                "wsSettings": {
-                    "path": "${S_Path}"
-                }
+                "network": "domainsocket"
             }
         },
         {
@@ -108,8 +122,20 @@ cat <<-EOF > /home/Software/config.json
             "settings": {
                 
             }
-        }
+        },
+		{
+			"protocol": "freedom",
+			"tag": "ssmux",
+			"streamSettings": {
+				"network": "domainsocket"
+			}
+		}
     ],
+    "transport": {
+        "dsSettings": {
+			"path":"/home/Software/ss-loop.sock"
+		}
+	},
     "routing": {
         "domainStrategy": "AsIs",
         "rules": [
@@ -119,7 +145,14 @@ cat <<-EOF > /home/Software/config.json
                     "geoip:private"
                 ],
                 "outboundTag": "blocked"
-            }
+            },
+			{
+				"type": "field",
+				"inboundTag": [
+					"wsdoko"
+				],
+				"outboundTag": "ssmux"
+			}
         ]
     },
     "policy": {
