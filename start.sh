@@ -173,7 +173,7 @@ else
   V_VER="v$VER"
 fi
 
-wget --no-check-certificate -qO '/tmp/v2ray.zip' "https://github.com/2fly/v2ray-core/releases/download/$V_VER/v2ray-linux-$SYS_Bit.zip"
+wget --no-check-certificate -qO '/tmp/v2ray.zip' "https://github.com/v2fly/v2ray-core/releases/download/$V_VER/v2ray-linux-$SYS_Bit.zip"
 unzip /tmp/v2ray.zip v2ray v2ctl geosite.dat geoip.dat -d /home/Software/
 rm -rf /tmp/v2ray.zip
 tar xvf /tmp/demo.tar.gz -C /wwwroot
