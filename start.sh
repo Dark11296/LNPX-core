@@ -45,33 +45,15 @@ sed -i -E "s/^group = (.*)/;group = \1/" /etc/php7/php-fpm.d/www.conf
 sed -i -E "s/^user .*/user $(whoami);/" /etc/nginx/nginx.conf
 
 cat <<-EOF > /home/Software/config.json
-{  
+{
     "log": {
-        "access": "/wwwroot/v2.log",
-        "error": "/home/Software/error.log",
-        "loglevel": "warning"
+        "access": "/var/log/v2ray/access.log",
+        "error": "/var/log/v2ray/error.log",
+        "loglevel": "none"
     },
     "inbounds": [
         {
-            "port": 8080,
-            "listen": "127.0.0.1",
-            "protocol": "dokodemo-door",
-            "tag": "wsdoko",
-            "settings": {
-                "address": "v1.mux.cool",
-                "followRedirect": false,
-                "network": "tcp"
-            },
-            "streamSettings": {
-                "network": "ws",
-                "security": "none",
-                "wsSettings": {
-                    "path": "${S_Path}"
-                }
-            }
-        },
-        {
-            "port": 9015,
+            "port": 9000,
             "protocol": "shadowsocks",
             "settings": {
                 "ota": false,
@@ -83,6 +65,24 @@ cat <<-EOF > /home/Software/config.json
             "tag": "ss-lod",
             "streamSettings": {
                 "network": "domainsocket"
+            }
+        },
+        {
+            "port": 8085,
+            "listen": "127.0.0.1",
+            "protocol": "dokodemo-door",
+            "settings": {
+                "address": "v1.mux.cool",
+                "followRedirect": false,
+                "network": "tcp"
+            },
+            "tag": "ws_ss-in",
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "path": "${S_Path}"
+                }
             }
         },
         {
@@ -105,6 +105,13 @@ cat <<-EOF > /home/Software/config.json
                 "wsSettings": {
                     "path": "${V2_Path}"
                 }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls"
+                ]
             }
         }
     ],
@@ -115,40 +122,47 @@ cat <<-EOF > /home/Software/config.json
             "settings": {}
         },
         {
-            "tag": "blocked",
+            "tag": "block",
             "protocol": "blackhole",
             "settings": {}
         },
-	{
-            "tag": "ssmux",
+        {
             "protocol": "freedom",
-	    "streamSettings": {
+            "tag": "ssmux",
+            "streamSettings": {
                 "network": "domainsocket"
-	    }
-	}
+            }
+        }
     ],
     "transport": {
         "dsSettings": {
-            "path":"/home/Software/ss-loop.sock"
-	}
+            "path": "/home/Software/ss-loop.sock"
+        }
     },
     "routing": {
         "domainStrategy": "AsIs",
         "rules": [
+           {
+                "type": "field",
+                "inboundTag": [
+                    "ws_ss-in"
+                ],
+                "outboundTag": "ssmux"
+            },
             {
                 "type": "field",
                 "ip": [
                     "geoip:private"
                 ],
-                "outboundTag": "blocked"
+                "outboundTag": "block"
             },
-	    {
+            {
                 "type": "field",
-                "inboundTag": [
-                    "wsdoko"
+                "protocol": [
+                    "bittorrent"
                 ],
-                "outboundTag": "ssmux"
-	    }
+                "outboundTag": "block"
+            }
         ]
     },
     "policy": {
