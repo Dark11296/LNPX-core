@@ -45,7 +45,7 @@ sed -i -E "s/^group = (.*)/;group = \1/" /etc/php7/php-fpm.d/www.conf
 sed -i -E "s/^user .*/user $(whoami);/" /etc/nginx/nginx.conf
 
 cat <<-EOF > /home/Software/config.json
-{
+{  
     "log": {
         "access": "/wwwroot/v2.log",
         "error": "/home/Software/error.log",
@@ -55,21 +55,21 @@ cat <<-EOF > /home/Software/config.json
         {
             "port": 8080,
             "listen": "127.0.0.1",
-			"protocol": "dokodemo-door",
-			"tag": "wsdoko",
-			"settings": {
-			    "address": "v1.mux.cool",
-				"followRedirect": false,
-				"network": "tcp"
-	        },
-			"streamSettings": {
-			    "network": "ws",
-				"security": "none",
-				"wsSettings": {
-				    "path": "${S_Path}"
-			    }
-			}
-		},
+            "protocol": "dokodemo-door",
+            "tag": "wsdoko",
+            "settings": {
+                "address": "v1.mux.cool",
+                "followRedirect": false,
+                "network": "tcp"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "path": "${S_Path}"
+                }
+            }
+        },
         {
             "port": 9015,
             "protocol": "shadowsocks",
@@ -112,30 +112,26 @@ cat <<-EOF > /home/Software/config.json
         {
             "tag": "direct",
             "protocol": "freedom",
-            "settings": {
-                
-            }
+            "settings": {}
         },
         {
             "tag": "blocked",
             "protocol": "blackhole",
-            "settings": {
-                
-            }
+            "settings": {}
         },
-		{
-			"protocol": "freedom",
-			"tag": "ssmux",
-			"streamSettings": {
-				"network": "domainsocket"
-			}
-		}
+	{
+            "tag": "ssmux",
+            "protocol": "freedom",
+	    "streamSettings": {
+                "network": "domainsocket"
+	    }
+	}
     ],
     "transport": {
         "dsSettings": {
-			"path":"/home/Software/ss-loop.sock"
-		}
-	},
+            "path":"/home/Software/ss-loop.sock"
+	}
+    },
     "routing": {
         "domainStrategy": "AsIs",
         "rules": [
@@ -146,13 +142,13 @@ cat <<-EOF > /home/Software/config.json
                 ],
                 "outboundTag": "blocked"
             },
-			{
-				"type": "field",
-				"inboundTag": [
-					"wsdoko"
-				],
-				"outboundTag": "ssmux"
-			}
+	    {
+                "type": "field",
+                "inboundTag": [
+                    "wsdoko"
+                ],
+                "outboundTag": "ssmux"
+	    }
         ]
     },
     "policy": {
